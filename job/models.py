@@ -18,9 +18,18 @@ class Experience(BaseModel):
         return self.title
 
 
+class Skill(BaseModel):
+    title = models.CharField(max_length=256)
+
+    def __str__(self) -> str:
+        return self.title
+
+
 class Job(BaseModel):
     title = models.CharField(max_length=256)
     description = models.TextField()
+
+    skills = models.ManyToManyField(Skill, related_name="jobs")
 
     region = models.ForeignKey(Region, on_delete=models.CASCADE)
 

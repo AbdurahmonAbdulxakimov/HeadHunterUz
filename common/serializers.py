@@ -19,3 +19,19 @@ class RegionSerializer(serializers.ModelSerializer):
             "id",
             "title",
         )
+
+
+class CareerSalaryCountSerializer(serializers.ModelSerializer):
+    price_min = serializers.IntegerField()
+    price_max = serializers.IntegerField()
+    jobs_count = serializers.IntegerField()
+
+    class Meta:
+        model = Career
+        fields = (
+            "id",
+            "title",
+            "price_min",
+            "price_max",
+            "jobs_count",
+        )

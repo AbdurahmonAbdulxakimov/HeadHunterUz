@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
-from job.models import Job, Experience
+from job.models import Job, Experience, Skill
 from common.serializers import CareerSerializer, RegionSerializer
+from company.serializers import CompanySimpleSerializer
 
 
 class ExperienceSerializer(serializers.ModelSerializer):
@@ -11,6 +12,15 @@ class ExperienceSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "code",
+        )
+
+
+class SkillSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Skill
+        fields = (
+            "id",
+            "title",
         )
 
 
@@ -36,8 +46,11 @@ class JobShortSerializer(serializers.ModelSerializer):
 
 class JobSerializer(serializers.ModelSerializer):
     experience = ExperienceSerializer()
-    company = serializers.StringRelatedField(source="company.title", read_only=True)
+    # company = serializers.StringRelatedField(source="company.title", read_only=True)
+    company = CompanySimpleSerializer()
+    region = RegionSerializer()
     career = serializers.SlugRelatedField(slug_field="title", read_only=True)
+    skills = SkillSerializer(many=True, read_only=True)
 
     class Meta:
         model = Job
@@ -53,6 +66,7 @@ class JobSerializer(serializers.ModelSerializer):
             "price_from",
             "price_to",
             "company",
+            "skills",
             "created_at",
             "updated_at",
             "updated_at",
